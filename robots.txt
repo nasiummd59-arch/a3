@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://smartcourseink.com/sitemap.xml
